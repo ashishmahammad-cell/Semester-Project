@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>5G Technology - The Future Is Now</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="An educational overview of 5G technology, evolution, architecture, global rollout, applications, myths and statistics.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+
+/* ---- CSS Variables ---- */
+:root {
+  --bg: #050810;
+  --surface: #0a0f1e;
+  --glass: rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.08);
+  --accent: #00d4ff;
+  --accent2: #7c3aed;
+  --accent3: #06ffa5;
+  --text: #e8eaf0;
+  --muted: #6b7280;
+  --heading-font: 'Syne', sans-serif;
+  --body-font: 'DM Sans', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body-font);
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* subtle noise overlay on top of everything */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+
+/* ---- Navigation ---- */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 0 48px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(5, 8, 16, 0.75);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.nav-logo {
+  font-family: var(--heading-font);
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--accent);
+  letter-spacing: 2px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 6px;
+  list-style: none;
+}
+
+.nav-links li a {
+  display: block;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.nav-links li a:hover,
+.nav-links li a.active {
+  color: var(--accent);
+  background: rgba(0, 212, 255, 0.08);
+}
+
+/* hamburger for mobile */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+/* mobile drawer */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  inset: 72px 0 0 0;
+  background: rgba(5, 8, 16, 0.98);
+  backdrop-filter: blur(24px);
+  z-index: 999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.mobile-nav.open {
+  display: flex;
+}
+
+.mobile-nav a {
+  font-family: var(--heading-font);
+  font-size: 24px;
+  font-weight: 700;
+  color: rgba(232, 234, 240, 0.6);
+  text-decoration: none;
+  padding: 16px;
+  transition: color 0.3s;
+  cursor: pointer;
+}
+
+.mobile-nav a:hover {
+  color: var(--accent);
+}
+
+
+/* ---- Hero Section ---- */
+.hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1800&q=80');
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.25) saturate(1.4);
+  transform: scale(1.05);
+  animation: heroZoom 20s ease-in-out infinite alternate;
+}
+
+@keyframes heroZoom {
+  from { transform: scale(1.05); }
+  to   { transform: scale(1.12); }
+}
+
+.hero-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 60%, rgba(0,212,255,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 20% 80%, rgba(124,58,237,0.10) 0%, transparent 60%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 860px;
+  padding: 0 24px;
+  animation: fadeUp 1.2s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 28px;
+  background: rgba(0, 212, 255, 0.05);
+}
+
+.hero-badge span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.7); }
+}
+
+.hero h1 {
+  font-family: var(--heading-font);
+  font-size: clamp(52px, 10vw, 108px);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -2px;
+  margin-bottom: 28px;
+}
+
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero p {
+  font-size: 18px;
+  line-height: 1.7;
+  color: rgba(232, 234, 240, 0.6);
+  max-width: 540px;
+  margin: 0 auto 40px;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 32px;
+  background: var(--accent);
+  color: #050810;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 1px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.hero-cta:hover {
+  background: #33ddff;
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(0, 212, 255, 0.3);
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  animation: bounce 2s infinite;
+}
+
+.scroll-hint::after {
+  content: '';
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--muted), transparent);
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(6px); }
+}
+
+
+/* ---- Page Switching ---- */
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+
+/* ---- Section Layout ---- */
+section.content-section {
+  padding: 120px 48px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.sec-tag {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.sec-title {
+  font-family: var(--heading-font);
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  margin-bottom: 20px;
+}
+
+.sec-sub {
+  font-size: 17px;
+  color: rgba(232, 234, 240, 0.55);
+  line-height: 1.7;
+  max-width: 600px;
+  margin-bottom: 64px;
+}
+
+.tag-label {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 4px;
+  background: rgba(0, 212, 255, 0.1);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+  margin: 56px 0;
+}
+
+.glow-line {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
+  margin: 60px 0;
+  opacity: 0.4;
+}
+
+.grad-text {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.grad-text-green {
+  background: linear-gradient(135deg, var(--accent3), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+
+/* ---- Cards ---- */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 64px;
+}
+
+.card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(0, 212, 255, 0.2);
+  background: rgba(0, 212, 255, 0.03);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(0, 212, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.card h3 {
+  font-family: var(--heading-font);
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #fff;
+}
+
+.card p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+
+/* ---- Images ---- */
+.img-band {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  border-radius: 24px;
+  display: block;
+  margin-bottom: 64px;
+  filter: brightness(0.75) saturate(1.2);
+}
+
+.img-mosaic {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 220px 220px;
+  gap: 12px;
+  margin-bottom: 64px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.img-mosaic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.7) saturate(1.3);
+  transition: filter 0.4s;
+}
+
+.img-mosaic img:first-child {
+  grid-row: 1 / 3;
+}
+
+.img-mosaic img:hover {
+  filter: brightness(0.9) saturate(1.5);
+}
+
+
+/* ---- Split Layout (two columns) ---- */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  margin-bottom: 80px;
+}
+
+.split.reverse {
+  direction: rtl;
+}
+
+.split.reverse > * {
+  direction: ltr;
+}
+
+.split-img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  border-radius: 20px;
+  filter: brightness(0.8) saturate(1.3);
+}
+
+.split-content h3 {
+  font-family: var(--heading-font);
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+
+.split-content p {
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(232, 234, 240, 0.6);
+  margin-bottom: 24px;
+}
+
+
+/* ---- Stat Pills ---- */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.stat-pill {
+  padding: 12px 24px;
+  border-radius: 100px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  text-align: center;
+}
+
+.stat-pill .num {
+  display: block;
+  font-family: var(--heading-font);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.stat-pill .lbl {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+
+/* ---- Table ---- */
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 40px;
+}
+
+.styled-table th {
+  font-family: var(--heading-font);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 12px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.styled-table td {
+  padding: 14px 20px;
+  font-size: 14px;
+  color: rgba(232, 234, 240, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.styled-table tr:hover td {
+  background: rgba(0, 212, 255, 0.03);
+}
+
+
+/* ---- Fancy List ---- */
+.fancy-list {
+  list-style: none;
+}
+
+.fancy-list li {
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(232, 234, 240, 0.7);
+}
+
+.fancy-list li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-top: 9px;
+  flex-shrink: 0;
+}
+
+
+/* ---- Numbers Grid (big stats) ---- */
+.numbers-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  margin-bottom: 64px;
+}
+
+.number-block {
+  padding: 40px 32px;
+  background: var(--glass);
+  text-align: center;
+  border: 1px solid var(--glass-border);
+}
+
+.number-block .big-num {
+  font-family: var(--heading-font);
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.number-block .big-label {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+
+/* ---- Comparison Grid ---- */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 48px;
+}
+
+.compare-grid > div {
+  padding: 20px 24px;
+  border-right: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
+  font-size: 14px;
+  color: rgba(232, 234, 240, 0.65);
+}
+
+.compare-grid > div:nth-child(4n) {
+  border-right: none;
+}
+
+.compare-grid .col-head {
+  font-family: var(--heading-font);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: var(--glass);
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.compare-grid .row-label {
+  font-weight: 500;
+  color: rgba(232, 234, 240, 0.85);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+
+/* ---- Progress Bars ---- */
+.progress-row {
+  margin-bottom: 20px;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: rgba(232, 234, 240, 0.7);
+}
+
+.progress-label span:last-child {
+  font-family: var(--heading-font);
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.progress-track {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 100px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent));
+  transition: width 1s ease;
+}
+
+
+/* ---- Background Section (full bleed with photo) ---- */
+.bg-section {
+  position: relative;
+  padding: 120px 48px;
+  overflow: hidden;
+}
+
+.bg-section-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.15) saturate(1.5);
+}
+
+.bg-section-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(124,58,237,0.2) 0%, transparent 70%);
+}
+
+.bg-section-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+
+/* ---- Myths Cards ---- */
+.myth-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.myth-card {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+}
+
+.myth-card .myth-header {
+  padding: 20px 24px 16px;
+  background: rgba(239, 68, 68, 0.08);
+  border-bottom: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.myth-card .myth-header h4 {
+  font-family: var(--heading-font);
+  font-size: 15px;
+  font-weight: 700;
+  color: #f87171;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.myth-card .myth-body {
+  padding: 20px 24px;
+  background: var(--glass);
+}
+
+.myth-card .myth-body p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(232, 234, 240, 0.65);
+}
+
+.myth-card .myth-body p strong {
+  color: var(--accent3);
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+
+/* ---- Timeline ---- */
+.timeline {
+  position: relative;
+  padding-left: 40px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 8px;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 36px;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -36px;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.5);
+}
+
+.timeline-item .year {
+  font-family: var(--heading-font);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.timeline-item h4 {
+  font-family: var(--heading-font);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.timeline-item p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+
+/* ---- Scroll Reveal Animation ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ---- Footer ---- */
+footer {
+  text-align: center;
+  padding: 48px;
+  border-top: 1px solid var(--glass-border);
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  section.content-section { padding: 80px 24px; }
+  .split { grid-template-columns: 1fr; gap: 32px; }
+  .split.reverse { direction: ltr; }
+  .myth-grid { grid-template-columns: 1fr; }
+  .numbers-grid { grid-template-columns: repeat(2, 1fr); }
+  .compare-grid { grid-template-columns: 1fr; }
+  .compare-grid .col-head:not(:first-child) { display: none; }
+  .bg-section { padding: 80px 24px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-logo">5G</div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('hero')" class="active" id="nav-hero">Overview</a></li>
+    <li><a onclick="showPage('intro')" id="nav-intro">Introduction</a></li>
+    <li><a onclick="showPage('evolution')" id="nav-evolution">Evolution</a></li>
+    <li><a onclick="showPage('architecture')" id="nav-architecture">Architecture</a></li>
+    <li><a onclick="showPage('global')" id="nav-global">Global</a></li>
+    <li><a onclick="showPage('applications')" id="nav-applications">Applications</a></li>
+    <li><a onclick="showPage('myths')" id="nav-myths">Myths</a></li>
+    <li><a onclick="showPage('stats')" id="nav-stats">Statistics</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMobileNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Drawer -->
+<div class="mobile-nav" id="mobileNav">
+  <a onclick="showPage('hero'); toggleMobileNav()">Overview</a>
+  <a onclick="showPage('intro'); toggleMobileNav()">Introduction</a>
+  <a onclick="showPage('evolution'); toggleMobileNav()">Evolution</a>
+  <a onclick="showPage('architecture'); toggleMobileNav()">Architecture</a>
+  <a onclick="showPage('global'); toggleMobileNav()">Global</a>
+  <a onclick="showPage('applications'); toggleMobileNav()">Applications</a>
+  <a onclick="showPage('myths'); toggleMobileNav()">Myths</a>
+  <a onclick="showPage('stats'); toggleMobileNav()">Statistics</a>
+</div>
+
+
+<!-- ===================== HERO PAGE ===================== -->
+<div id="hero-page" class="page active">
+
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <div class="hero-badge"><span></span> 5th Generation · 2020–Present</div>
+      <h1>The World<br>Runs on <em>5G</em></h1>
+      <p>Explore how the fifth generation of wireless technology is reshaping industries, enabling smart cities, and connecting a billion devices in real time.</p>
+      <button class="hero-cta" onclick="showPage('intro')">Explore Technology</button>
+    </div>
+    <div class="scroll-hint">Scroll</div>
+  </div>
+
+  <!-- Quick stats band -->
+  <div class="bg-section">
+    <img class="bg-section-img" src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1800&q=80" alt="">
+    <div class="bg-section-glow"></div>
+    <div class="bg-section-content">
+
+      <div class="numbers-grid reveal">
+        <div class="number-block">
+          <div class="big-num">2.5B</div>
+          <div class="big-label">Global 5G Users</div>
+        </div>
+        <div class="number-block">
+          <div class="big-num">20 Gbps</div>
+          <div class="big-label">Peak Speed</div>
+        </div>
+        <div class="number-block">
+          <div class="big-num">1 ms</div>
+          <div class="big-label">Ultra-Low Latency</div>
+        </div>
+        <div class="number-block">
+          <div class="big-num">100+</div>
+          <div class="big-label">Countries Deployed</div>
+        </div>
+      </div>
+
+      <div class="cards-grid reveal">
+        <div class="card" onclick="showPage('intro')" style="cursor:pointer">
+          <div class="card-icon">📡</div>
+          <h3>Introduction</h3>
+          <p>What is 5G? The three revolutionary pillars that make it fundamentally different from every generation before it.</p>
+        </div>
+        <div class="card" onclick="showPage('evolution')" style="cursor:pointer">
+          <div class="card-icon">📈</div>
+          <h3>Evolution</h3>
+          <p>From analog 1G in 1979 to cloud-native 5G. The 40-year journey that transformed wireless communications.</p>
+        </div>
+        <div class="card" onclick="showPage('architecture')" style="cursor:pointer">
+          <div class="card-icon">🏗️</div>
+          <h3>Architecture</h3>
+          <p>Cloud-native, service-based, software-defined — the technical revolution that powers 5G's capabilities.</p>
+        </div>
+        <div class="card" onclick="showPage('global')" style="cursor:pointer">
+          <div class="card-icon">🌍</div>
+          <h3>Global Rollout</h3>
+          <p>India's world-record deployment vs. global leaders. How 300 days changed the narrative of 5G adoption.</p>
+        </div>
+        <div class="card" onclick="showPage('applications')" style="cursor:pointer">
+          <div class="card-icon">⚡</div>
+          <h3>Applications</h3>
+          <p>Remote surgery, autonomous vehicles, smart factories — the transformative use cases redefining sectors.</p>
+        </div>
+        <div class="card" onclick="showPage('myths')" style="cursor:pointer">
+          <div class="card-icon">🔬</div>
+          <h3>Myths vs. Reality</h3>
+          <p>Scientific facts vs. misinformation. What global health organizations and IEEE say about 5G safety.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>© 2024 5G Technology · All data sourced from ITU, GSMA, and TRAI</footer>
+</div>
+
+
+<!-- ===================== INTRODUCTION ===================== -->
+<div id="intro-page" class="page">
+  <section class="content-section">
+
+    <div class="reveal">
+      <div class="sec-tag">Chapter 01</div>
+      <h2 class="sec-title">What is <span class="grad-text">5G?</span></h2>
+      <p class="sec-sub">5G — the Fifth Generation of wireless cellular technology — is not just faster internet. It is a fundamental reimagining of how the world connects.</p>
+    </div>
+
+    <img class="img-band reveal" src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1600&q=80" alt="5G Technology">
+
+    <div class="split reveal">
+      <img class="split-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80" alt="5G Network">
+      <div class="split-content">
+        <div class="tag-label">Core Definition</div>
+        <h3>Connect Everything,<br>Not Just People</h3>
+        <p>Unlike 4G which was designed to connect smartphones, 5G is engineered to connect billions of devices — machines, sensors, vehicles, and infrastructure — simultaneously, with different performance profiles for each use case.</p>
+        <div class="stats-row">
+          <div class="stat-pill"><span class="num">20x</span><span class="lbl">Faster</span></div>
+          <div class="stat-pill"><span class="num">100x</span><span class="lbl">Lower Latency</span></div>
+          <div class="stat-pill"><span class="num">1M</span><span class="lbl">Devices/km2</span></div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="glow-line">
+
+    <div class="reveal">
+      <div class="tag-label">Three Pillars</div>
+      <h3 style="font-family:var(--heading-font);font-size:32px;font-weight:800;margin-bottom:32px;letter-spacing:-0.5px">Revolutionary Capabilities</h3>
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-icon">🚀</div>
+          <h3>eMBB</h3>
+          <p><strong style="color:var(--accent)">Enhanced Mobile Broadband</strong><br><br>Peak speeds up to 20 Gbps. Real-world 100 Mbps to 1 Gbps. Enables 8K streaming, VR, AR, cloud gaming, and instant large-file downloads.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">⏱️</div>
+          <h3>URLLC</h3>
+          <p><strong style="color:var(--accent)">Ultra-Reliable Low-Latency</strong><br><br>Latency reduced to 1 to 10ms. Critical for remote surgery, autonomous vehicles, industrial robotics, and real-time control systems.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔗</div>
+          <h3>mMTC</h3>
+          <p><strong style="color:var(--accent)">Massive Machine-Type Comms</strong><br><br>Up to 1 million devices per km2. Optimized for smart city sensors, wearables, agricultural monitors, and IoT infrastructure.</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="glow-line">
+
+    <div class="reveal">
+      <div class="tag-label">4G vs 5G</div>
+      <h3 style="font-family:var(--heading-font);font-size:32px;font-weight:800;margin-bottom:32px;letter-spacing:-0.5px">A Fundamental Shift</h3>
+      <div class="compare-grid">
+        <div class="col-head">Aspect</div>
+        <div class="col-head">4G / LTE</div>
+        <div class="col-head">5G</div>
+        <div class="col-head">Impact</div>
+
+        <div class="row-label">Design Philosophy</div>
+        <div>Connect People</div>
+        <div>Connect Everything</div>
+        <div>IoT at scale</div>
+
+        <div class="row-label">Network Approach</div>
+        <div>One-size-fits-all</div>
+        <div>Network Slicing</div>
+        <div>Custom per use-case</div>
+
+        <div class="row-label">Architecture</div>
+        <div>Hardware-based</div>
+        <div>Cloud-native</div>
+        <div>Software-defined</div>
+
+        <div class="row-label">Intelligence</div>
+        <div>Centralized Core</div>
+        <div>Distributed + AI</div>
+        <div>Edge computing</div>
+
+        <div class="row-label">Peak Speed</div>
+        <div>1 Gbps</div>
+        <div>20 Gbps</div>
+        <div>20x faster</div>
+      </div>
+    </div>
+
+    <div class="split reveal">
+      <div class="split-content">
+        <div class="tag-label">Key Technologies</div>
+        <h3>What Makes 5G Possible</h3>
+        <p>Three technological breakthroughs converge to deliver 5G's transformative performance.</p>
+        <ul class="fancy-list">
+          <li><strong style="color:#fff">New Spectrum Bands</strong> — Low-band for wide coverage, mid-band for balance, mmWave for ultra-high speed in dense areas</li>
+          <li><strong style="color:#fff">Massive MIMO</strong> — 64 to 256 antenna arrays with beamforming that focuses signals directly at users, reducing interference</li>
+          <li><strong style="color:#fff">Network Virtualization</strong> — Software-defined networking, network slicing, and edge computing for ultra-low latency</li>
+          <li><strong style="color:#fff">Small Cells</strong> — Dense deployment of compact base stations to handle high device density in urban areas</li>
+        </ul>
+      </div>
+      <img class="split-img" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=900&q=80" alt="5G Architecture">
+    </div>
+
+  </section>
+  <footer>© 2024 5G Technology · Chapter 01: Introduction</footer>
+</div>
+
+
+<!-- ===================== EVOLUTION ===================== -->
+<div id="evolution-page" class="page">
+  <section class="content-section">
+
+    <div class="reveal">
+      <div class="sec-tag">Chapter 02</div>
+      <h2 class="sec-title">40 Years of<br><span class="grad-text">Evolution</span></h2>
+      <p class="sec-sub">From a 2.4 Kbps analog signal in 1979 to a 20 Gbps connected intelligence platform in 2020. The story of mobile communications is a story of relentless reinvention.</p>
+    </div>
+
+    <img class="img-band reveal" src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1600&q=80" alt="Evolution Timeline">
+
+    <div class="timeline reveal" style="margin-bottom:64px">
+      <div class="timeline-item">
+        <div class="year">1G · 1979–1990</div>
+        <h4>The Analog Beginning</h4>
+        <p>AMPS, TACS, NMT technology. 2.4 Kbps. Voice calls only, no encryption, no data. The brick phone era — Motorola DynaTAC weighed nearly 1kg and offered 30 minutes of talk time.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="year">2G · 1991–2000</div>
+        <h4>The Digital Revolution</h4>
+        <p>GSM and CDMA transformed mobile from analog to digital. Up to 64 Kbps, SMS messaging, encrypted calls, international roaming. The Nokia 3310 era. Text messaging changed social communication forever.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="year">3G · 2001–2010</div>
+        <h4>The Mobile Internet Era</h4>
+        <p>UMTS and CDMA2000 brought the internet to mobile. 2 to 14 Mbps. Web browsing, video calls, GPS navigation. The beginning of the smartphone era — Apple launched iPhone in 2007 on 2G, then 3G.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="year">4G / LTE · 2010–2020</div>
+        <h4>The Mobile Broadband Era</h4>
+        <p>LTE delivered 100 Mbps to 1 Gbps. HD video streaming, cloud apps, mobile gaming. The all-IP network. Created the app economy worth trillions — Uber, Instagram, Spotify all built on 4G.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="year">5G · 2020–Present</div>
+        <h4>Connected Intelligence Era</h4>
+        <p>Cloud-native New Radio (NR) with network slicing and edge computing. 1 to 20 Gbps, 1ms latency. Not just connecting people — connecting industries, systems, and autonomous machines at scale.</p>
+      </div>
+    </div>
+
+    <hr class="glow-line">
+
+    <div class="reveal">
+      <div class="tag-label">Technical Leap</div>
+      <h3 style="font-family:var(--heading-font);font-size:32px;font-weight:800;margin-bottom:32px;letter-spacing:-0.5px">Performance Comparison</h3>
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>3G</th>
+            <th>4G</th>
+            <th>5G</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Peak Data Rate</td><td>2–14 Mbps</td><td>100 Mbps–1 Gbps</td><td style="color:var(--accent3)">1–20 Gbps</td></tr>
+          <tr><td>Latency</td><td>100–500 ms</td><td>30–50 ms</td><td style="color:var(--accent3)">1–10 ms</td></tr>
+          <tr><td>Connection Density</td><td>10 devices/km2</td><td>100K devices/km2</td><td style="color:var(--accent3)">1M devices/km2</td></tr>
+          <tr><td>Architecture</td><td>Circuit + Packet</td><td>All-IP</td><td style="color:var(--accent3)">Cloud-native (SBA)</td></tr>
+          <tr><td>Mobility Support</td><td>144 km/h</td><td>350 km/h</td><td style="color:var(--accent3)">500 km/h</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="split reveal">
+      <img class="split-img" src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=900&q=80" alt="5G Evolution">
+      <div class="split-content">
+        <div class="tag-label">Key Milestones</div>
+        <h3>Path to 5G</h3>
+        <ul class="fancy-list">
+          <li><strong style="color:var(--accent)">2010</strong> — ITU defines IMT-2020 vision for next-gen networks</li>
+          <li><strong style="color:var(--accent)">2015</strong> — 3GPP begins formal 5G NR standardization</li>
+          <li><strong style="color:var(--accent)">2018</strong> — First commercial field trials begin worldwide</li>
+          <li><strong style="color:var(--accent)">2019</strong> — Commercial launches in Korea, USA, Switzerland</li>
+          <li><strong style="color:var(--accent)">2022</strong> — India sets world record for fastest 5G deployment</li>
+          <li><strong style="color:var(--accent)">2024</strong> — 5G-Advanced (Rel-18) begins deployment globally</li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+  <footer>© 2024 5G Technology · Chapter 02: Evolution</footer>
+</div>
+
+
+<!-- ===================== ARCHITECTURE ===================== -->
+<div id="architecture-page" class="page">
+  <section class="content-section">
+
+    <div class="reveal">
+      <div class="sec-tag">Chapter 03</div>
+      <h2 class="sec-title">5G <span class="grad-text">Architecture</span></h2>
+      <p class="sec-sub">From monolithic hardware to cloud-native intelligence. 5G's service-based architecture (SBA) is the biggest structural shift in telecom history.</p>
+    </div>
+
+    <img class="img-band reveal" src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1600&q=80" alt="5G Architecture">
+
+    <div class="split reveal">
+      <div class="split-content">
+        <div class="tag-label">From EPC to SBA</div>
+        <h3>The Architectural Revolution</h3>
+        <p>4G relied on a rigid, hardware-centric Evolved Packet Core (EPC). 5G replaces this with modular network functions communicating via standardized APIs — like microservices for telecom.</p>
+        <h4 style="font-family:var(--heading-font);margin:20px 0 12px;font-size:16px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">4G Core Functions</h4>
+        <ul class="fancy-list" style="margin-bottom:24px">
+          <li>MME — Mobility Management Entity</li>
+          <li>S-GW — Serving Gateway</li>
+          <li>P-GW — Packet Data Gateway</li>
+          <li>HSS — Home Subscriber Server</li>
+        </ul>
+        <h4 style="font-family:var(--heading-font);margin:0 0 12px;font-size:16px;color:var(--accent);letter-spacing:1px;text-transform:uppercase">5G Core Functions (SBA)</h4>
+        <ul class="fancy-list">
+          <li>AMF — Access and Mobility Management</li>
+          <li>SMF — Session Management Function</li>
+          <li>UPF — User Plane Function</li>
+          <li>UDM — Unified Data Management</li>
+          <li>NRF — Network Repository Function</li>
+        </ul>
+      </div>
+      <img class="split-img" src="https://images.unsplash.com/photo-1580584126903-c17d41830450?w=900&q=80" alt="Network Architecture">
+    </div>
+
+    <hr class="glow-line">
+
+    <div class="reveal">
+      <div class="tag-label">Three Layers</div>
+      <h3 style="font-family:var(--heading-font);font-size:32px;font-weight:800;margin-bottom:32px;letter-spacing:-0.5px">System Architecture</h3>
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-icon">📱</div>
+          <h3>Application Layer</h3>
+          <p>Supports eMBB, URLLC, and mMTC use cases. Service delivery platform that exposes network capabilities via APIs to third-party developers and enterprises.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🧠</div>
+          <h3>Core Network Layer</h3>
+          <p>Control and user plane separation (CUPS). Session management, authentication, mobility, and data routing. Cloud-native with containerized network functions.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📶</div>
+          <h3>Access Network Layer</h3>
+          <p>The Radio Access Network (gNB), transport network, and Multi-Access Edge Computing (MEC). The layer that physically connects user devices to the 5G core.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="split reveal" style="margin-top:64px">
+      <img class="split-img" src="https://images.unsplash.com/photo-1573164713988-8665fc963095?w=900&q=80" alt="5G RAN">
+      <div class="split-content">
+        <div class="tag-label">Radio Access Network</div>
+        <h3>Open RAN Architecture</h3>
+        <p>Modern 5G separates the base station into three functional units — enabling virtualization, centralized control, and vendor-neutral deployments.</p>
+        <ul class="fancy-list">
+          <li><strong style="color:#fff">Centralized Unit (CU)</strong> — Handles RRC and PDCP protocol layers. Can be cloud-hosted far from the antenna.</li>
+          <li><strong style="color:#fff">Distributed Unit (DU)</strong> — Handles RLC, MAC, and upper PHY. Located near or at the antenna site.</li>
+          <li><strong style="color:#fff">Radio Unit (RU)</strong> — Low-PHY functions and RF processing. The actual antenna at the tower or small cell.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top:64px">
+      <div class="tag-label">Key Benefits</div>
+      <h3 style="font-family:var(--heading-font);font-size:32px;font-weight:800;margin-bottom:32px;letter-spacing:-0.5px">Why This Architecture Matters</h3>
+      <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))">
+        <div class="card"><div class="card-icon">☁️</div><h3>Cloud-Native</h3><p>Scale up or down on demand. Deploy new features in minutes, not months.</p></div>
+        <div class="card"><div class="card-icon">✂️</div><h3>Network Slicing</h3><p>One physical network, multiple virtual networks — each optimized for its use case.</p></div>
+        <div class="card"><div class="card-icon">⚡</div><h3>Edge Computing</h3><p>Processing at the edge reduces round-trip latency to under 1ms for critical applications.</p></div>
+        <div class="card"><div class="card-icon">🔒</div><h3>Built-in Security</h3><p>Zero-trust architecture, mutual authentication, and end-to-end encryption by default.</p></div>
+      </div>
+    </div>
+
+  </section>
+  <footer>© 2024 5G Technology · Chapter 03: Architecture</footer>
+</div>
+
+
+<!-- ===================== GLOBAL ROLLOUT ===================== -->
+<div id="global-page" class="page">
+  <section class="content-section">
+
+    <div class="reveal">
+      <div class="sec-tag">Chapter 04</div>
+      <h2 class="sec-title">India vs<br><span class="grad-text">The World</span></h2>
+      <p class="sec-sub">India entered 5G three years behind leading nations — then completed in 300 days what took others up to 3 years. Here is how the world's fastest 5G deployment happened.</p>
+    </div>
+
+    <img class="img-band reveal" src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1600&q=80" alt="India 5G Rollout">
+
+    <div class="reveal">
+      <div class="tag-label">Launch Timeline</div>
+      <h3 style="font-family:var(--heading-font);font-size:32px;font-weight:800;margin-bottom:32px;letter-spacing:-0.5px">Who Launched When</h3>
+      <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))">
+        <div class="card"><div class="card-icon">🇰🇷</div><h3>South Korea</h3><p>April 3, 2019 — First in the world. Midnight launch beat the USA by hours.</p></div>
+        <div class="card"><div class="card-icon">🇺🇸</div><h3>United States</h3><p>April 3, 2019 — Verizon launched same day. Aggressive mmWave strategy in major cities.</p></div>
+        <div class="card"><div class="card-icon">🇨🇳</div><h3>China</h3><p>October 31, 2019 — Largest single 5G deployment ever. 700M users by 2024.</p></div>
+        <div class="card"><div class="card-icon">🇬🇧</div><h3>United Kingdom</h3><p>May 30, 2019 — EE launches in 6 cities. Mid-band 3.4 GHz focus for coverage.</p></div>
+        <div class="card"><div class="card-icon">🇮🇳</div><h3>India</h3><p>October 1, 2022 — Late entry, but fastest rollout in history: 10,000+ cities in 2 years.</p></div>
+      </div>
+    </div>
+
+    <hr class="glow-line">
+
+    <div class="split reveal">
+      <div class="split-content">
+        <div class="tag-label">India's Record</div>
+        <h3>The World's Fastest 5G Rollout</h3>
+        <p>Despite launching 3 years after early adopters, India covered 85% of its population in just 2 years — a pace that stunned the global telecom industry.</p>
+        <div class="stats-row">
+          <div class="stat-pill"><span class="num">300</span><span class="lbl">Days to 100M</span></div>
+          <div class="stat-pill"><span class="num">240M+</span><span class="lbl">5G Users</span></div>
+          <div class="stat-pill"><span class="num">10,000+</span><span class="lbl">Cities Covered</span></div>
+        </div>
+
+        <div class="progress-row">
+          <div class="progress-label"><span>India population coverage</span><span>85%</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:85%"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-label"><span>South Korea</span><span>93%</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:93%"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-label"><span>USA</span><span>70%</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:70%"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-label"><span>Europe (avg)</span><span>60%</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:60%"></div></div>
+        </div>
+      </div>
+      <img class="split-img" src="https://images.unsplash.com/photo-1587474260584-136574528ed5?w=900&q=80" alt="India Cities 5G">
+    </div>
+
+    <hr class="glow-line">
+
+    <div class="reveal">
+      <div class="tag-label">Spectrum Strategy</div>
+      <h3 style="font-family:var(--heading-font);font-size:32px;font-weight:800;margin-bottom:32px;letter-spacing:-0.5px">How Each Country Built Its Network</h3>
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Country</th>
+            <th>Primary Bands</th>
+            <th>Strategy</th>
+            <th>2024 Users</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>USA</td><td>600 MHz, 2.5 GHz, 28/39 GHz</td><td>Aggressive mmWave + mid-band</td><td>130M</td></tr>
+          <tr><td>China</td><td>2.6, 3.5, 4.9 GHz</td><td>Massive mid-band focus</td><td>700M</td></tr>
+          <tr><td>South Korea</td><td>3.5 GHz, 28 GHz</td><td>Balanced approach</td><td>45M</td></tr>
+          <tr><td>Europe</td><td>3.4–3.8 GHz</td><td>Mid-band focus</td><td>~200M</td></tr>
+          <tr><td style="color:var(--accent3)">India</td><td>700 MHz, 3.3–3.67 GHz, 26 GHz</td><td>Coverage-first mid-band</td><td style="color:var(--accent3)">240M</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </section>
+  <footer>© 2024 5G Technology · Chapter 04: Global Rollout</footer>
+</div>
+
+
+<!-- ===================== APPLICATIONS ===================== -->
+<div id="applications-page" class="page">
+  <section class="content-section">
+
+    <div class="reveal">
+      <div class="sec-tag">Chapter 05</div>
+      <h2 class="sec-title">5G <span class="grad-text">Applications</span></h2>
+      <p class="sec-sub">5G is not just faster downloads. It is the invisible infrastructure behind autonomous surgery, driverless cars, and factories that run themselves.</p>
+    </div>
+
+    <div class="img-mosaic reveal">
+      <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=900&q=80" alt="Healthcare">
+      <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&q=80" alt="Robotics">
+      <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=600&q=80" alt="Smart City">
+    </div>
+
+    <div class="cards-grid reveal">
+      <div class="card">
+        <div class="card-icon">🏥</div>
+        <h3>Healthcare</h3>
+        <p>Remote robotic surgery with haptic feedback. Real-time 4K/8K surgical video. Smart ambulances transmitting vitals en-route. Wearable continuous monitoring.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🚗</div>
+        <h3>Autonomous Vehicles</h3>
+        <p>V2X (vehicle-to-everything) communication. Platooning, collision avoidance, live HD mapping. 5G's 1ms latency is essential — at 100km/h, 50ms means 1.4m of blind movement.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏭</div>
+        <h3>Smart Manufacturing</h3>
+        <p>Wireless robots replacing cables on factory floors. Predictive maintenance from vibration sensors. Digital twins synchronized in real time. Industry 4.0 realized.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏙️</div>
+        <h3>Smart Cities</h3>
+        <p>1 million IoT sensors per km2 — traffic lights that respond to flow, air quality monitoring, smart waste bins, connected infrastructure at city scale.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎮</div>
+        <h3>Entertainment and VR</h3>
+        <p>Console-quality cloud gaming with no downloads. Live 360° VR streaming. Holographic video calls. AR navigation overlays. Virtual concerts for millions simultaneously.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌾</div>
+        <h3>Agriculture</h3>
+        <p>Autonomous tractors guided by 5G positioning. Drone fleets for crop monitoring. Soil and weather sensor networks across thousands of hectares. Precision farming at scale.</p>
+      </div>
+    </div>
+
+    <div class="split reveal">
+      <img class="split-img" src="https://images.unsplash.com/photo-1551076805-e1869033e561?w=900&q=80" alt="Medical 5G">
+      <div class="split-content">
+        <div class="tag-label">Healthcare Revolution</div>
+        <h3>Remote Surgery<br>is Already Real</h3>
+        <p>In 2019, Chinese surgeons performed the world's first 5G remote brain surgery — operating on a patient 3,000 km away through a robotic system with real-time 4K feedback and 1ms command latency.</p>
+        <ul class="fancy-list">
+          <li>Robotic systems with haptic feedback for precision</li>
+          <li>Multi-specialist global consultation in real time</li>
+          <li>AR overlay for surgeons showing scan data live</li>
+          <li>Smart ICU beds transmitting 50+ vitals continuously</li>
+          <li>Drone-delivered AEDs reaching incidents in minutes</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="split reveal">
+      <div class="split-content">
+        <div class="tag-label">Industry 4.0</div>
+        <h3>The Wireless Factory Floor</h3>
+        <p>5G replaces thousands of meters of industrial cabling. Collaborative robots (cobots) move freely. Augmented reality guides workers through complex assembly. Every machine is a sensor.</p>
+        <ul class="fancy-list">
+          <li>AGVs (Autonomous Guided Vehicles) navigate wirelessly</li>
+          <li>Real-time vibration analysis predicts bearing failures days ahead</li>
+          <li>Digital twins simulate changes before physical implementation</li>
+          <li>20 to 30% productivity improvement reported by early adopters</li>
+          <li>Quality control cameras process defects at 120fps in real time</li>
+        </ul>
+      </div>
+      <img class="split-img" src="https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=900&q=80" alt="Smart Factory">
+    </div>
+
+  </section>
+  <footer>© 2024 5G Technology · Chapter 05: Applications</footer>
+</div>
+
+
+<!-- ===================== MYTHS ===================== -->
+<div id="myths-page" class="page">
+  <section class="content-section">
+
+    <div class="reveal">
+      <div class="sec-tag">Chapter 06</div>
+      <h2 class="sec-title">Myths vs<br><span class="grad-text">Reality</span></h2>
+      <p class="sec-sub">5G has been the subject of more misinformation than perhaps any technology in history. Here is what the science actually says.</p>
+    </div>
+
+    <img class="img-band reveal"
+         src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1600&q=80"
+         alt="5G Signal Technology">
+
+    <div class="myth-grid reveal">
+      <div class="myth-card">
+        <div class="myth-header">
+          <h4>Myth: "5G is more dangerous than 4G"</h4>
+        </div>
+        <div class="myth-body">
+          <p><strong>Reality</strong>Higher frequency does not mean higher danger. 5G follows the same SAR limits as 4G. mmWave penetrates only 1 to 2mm into skin — less than sunlight. Beamforming actually reduces unnecessary exposure by targeting signals only at active users.</p>
+        </div>
+      </div>
+      <div class="myth-card">
+        <div class="myth-header">
+          <h4>Myth: "5G caused COVID-19"</h4>
+        </div>
+        <div class="myth-body">
+          <p><strong>Reality</strong>Radio waves cannot carry or transmit viruses. This is physically impossible — viruses are biological organisms, radio waves are electromagnetic energy. COVID-19 spread in many countries with no 5G at all. Confirmed as medical misinformation by WHO.</p>
+        </div>
+      </div>
+      <div class="myth-card">
+        <div class="myth-header">
+          <h4>Myth: "5G kills birds"</h4>
+        </div>
+        <div class="myth-body">
+          <p><strong>Reality</strong>No scientific evidence links 5G to bird deaths. Birds have coexisted with cellular towers since 1G in 1979. Actual causes of bird deaths: disease, habitat loss, collisions with glass, and predators. The viral videos were debunked as unrelated incidents.</p>
+        </div>
+      </div>
+      <div class="myth-card">
+        <div class="myth-header">
+          <h4>Myth: "5G is just faster 4G"</h4>
+        </div>
+        <div class="myth-body">
+          <p><strong>Reality</strong>Speed is just one of three pillars. URLLC enables remote surgery and autonomous vehicles. mMTC enables a million devices per km2. Network slicing, edge computing, and cloud-native architecture make it an entirely different technology platform.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="tag-label">Expert Consensus</div>
+      <h3 style="font-family:var(--heading-font);font-size:32px;font-weight:800;margin-bottom:32px;letter-spacing:-0.5px">What Global Health Bodies Say</h3>
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Organization</th>
+            <th>Position on 5G Safety</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>WHO</td><td>No evidence of health risk from 5G within international guidelines</td></tr>
+          <tr><td>ICNIRP</td><td>5G is safe under current exposure limits — guidelines updated 2020</td></tr>
+          <tr><td>FDA (USA)</td><td>No evidence linking mobile RF radiation to health problems</td></tr>
+          <tr><td>ITU</td><td>5G complies with all international safety standards</td></tr>
+          <tr><td>IEEE</td><td>5G radiation levels well below safety thresholds — 50x safety buffer</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cards-grid reveal">
+      <div class="card">
+        <div class="card-icon">🔋</div>
+        <h3>Energy Levels</h3>
+        <p>5G signals carry millions of times less energy than visible light. They are non-ionizing radiation — fundamentally incapable of breaking molecular bonds or damaging DNA.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🛡️</div>
+        <h3>Safety Margins</h3>
+        <p>Exposure limits include a 50x safety buffer beyond the level where any effect has been observed in scientific studies. Real-world exposure is typically 1,000x below limits.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📚</div>
+        <h3>Research History</h3>
+        <p>Over 30 years of RF research across thousands of studies shows no conclusive evidence of harm from non-ionizing radiation at regulated exposure levels.</p>
+      </div>
+    </div>
+
+  </section>
+  <footer>© 2024 5G Technology · Chapter 06: Myths and Reality</footer>
+</div>
+
+
+<!-- ===================== STATISTICS ===================== -->
+<div id="stats-page" class="page">
+
+  <div class="bg-section">
+    <img class="bg-section-img" src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1800&q=80" alt="">
+    <div class="bg-section-glow"></div>
+    <div class="bg-section-content">
+
+      <div class="reveal">
+        <div class="sec-tag">Chapter 07</div>
+        <h2 class="sec-title" style="margin-bottom:16px">5G by the<br><span class="grad-text">Numbers</span></h2>
+        <p class="sec-sub">Every statistic tells a story. From 13 million users in 2019 to 2.5 billion in 2024 — the fastest technology adoption in human history.</p>
+      </div>
+
+      <div class="numbers-grid reveal">
+        <div class="number-block"><div class="big-num">2.5B</div><div class="big-label">Global Users 2024</div></div>
+        <div class="number-block"><div class="big-num">300+</div><div class="big-label">Networks Worldwide</div></div>
+        <div class="number-block"><div class="big-num">$13.2T</div><div class="big-label">GDP Impact by 2030</div></div>
+        <div class="number-block"><div class="big-num">22.8M</div><div class="big-label">Jobs Created</div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <section class="content-section">
+
+    <div class="reveal">
+      <div class="tag-label">User Growth</div>
+      <h3 style="font-family:var(--heading-font);font-size:32px;font-weight:800;margin-bottom:32px;letter-spacing:-0.5px">Global 5G Adoption (2019–2024)</h3>
+      <table class="styled-table">
+        <thead>
+          <tr><th>Year</th><th>Global 5G Users</th><th>YoY Growth</th><th>Milestone</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>2019</td><td>13 million</td><td>—</td><td>Commercial launch era</td></tr>
+          <tr><td>2020</td><td>220 million</td><td style="color:var(--accent3)">+1,592%</td><td>China drives mass adoption</td></tr>
+          <tr><td>2021</td><td>620 million</td><td style="color:var(--accent3)">+182%</td><td>Europe and Asia expand</td></tr>
+          <tr><td>2022</td><td>1.1 billion</td><td style="color:var(--accent3)">+77%</td><td>India joins, 1B milestone</td></tr>
+          <tr><td>2023</td><td>1.8 billion</td><td style="color:var(--accent3)">+64%</td><td>Mid-band expansion</td></tr>
+          <tr><td>2024</td><td style="color:var(--accent)">2.5 billion</td><td style="color:var(--accent3)">+39%</td><td>30% of all mobile users</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="glow-line">
+
+    <div class="reveal">
+      <div class="tag-label">Country Rankings</div>
+      <h3 style="font-family:var(--heading-font);font-size:32px;font-weight:800;margin-bottom:32px;letter-spacing:-0.5px">Top 5G Nations 2024</h3>
+      <div style="margin-bottom:48px">
+        <div class="progress-row">
+          <div class="progress-label"><span>South Korea — 90% penetration</span><span>45M users · 500–800 Mbps avg</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:90%"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-label"><span>China — 50% penetration</span><span>700M users · 300–500 Mbps avg</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:50%"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-label"><span>USA — 40% penetration</span><span>130M users · 200–400 Mbps avg</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:40%"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-label"><span>Japan — 35% penetration</span><span>40M users · 280–350 Mbps avg</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:35%"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-label"><span>UK — 33% penetration</span><span>22M users · 150–250 Mbps avg</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:33%"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-label"><span>India — 20% penetration</span><span style="color:var(--accent3)">240M users · World record rollout</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:20%;background:linear-gradient(90deg,var(--accent3),var(--accent))"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="split reveal">
+      <div class="split-content">
+        <div class="tag-label">India Deep Dive</div>
+        <h3>India's 5G Story</h3>
+        <p>October 1, 2022 — PM Modi launched 5G at India Mobile Congress. What followed was the fastest national 5G deployment the world has ever seen.</p>
+        <div class="cards-grid" style="grid-template-columns:1fr 1fr; gap:16px; margin-top:24px">
+          <div class="card" style="padding:20px"><h3 style="font-size:28px;color:var(--accent)">240M+</h3><p style="font-size:12px">5G Users</p></div>
+          <div class="card" style="padding:20px"><h3 style="font-size:28px;color:var(--accent)">85%</h3><p style="font-size:12px">Population Coverage</p></div>
+          <div class="card" style="padding:20px"><h3 style="font-size:28px;color:var(--accent)">600K+</h3><p style="font-size:12px">Base Stations</p></div>
+          <div class="card" style="padding:20px"><h3 style="font-size:28px;color:var(--accent)">$30B+</h3><p style="font-size:12px">Total Investment</p></div>
+        </div>
+      </div>
+      <!--
+        Changed from a portrait-style phone image to an aerial/city infrastructure
+        photo that better represents national 5G rollout statistics
+      -->
+      <img class="split-img"
+           src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=900&q=80"
+           alt="City Infrastructure India">
+    </div>
+
+    <hr class="glow-line">
+
+    <div class="reveal">
+      <div class="tag-label">India Operators</div>
+      <h3 style="font-family:var(--heading-font);font-size:32px;font-weight:800;margin-bottom:32px;letter-spacing:-0.5px">Market Share 2024</h3>
+      <div style="margin-bottom:32px">
+        <div class="progress-row">
+          <div class="progress-label"><span>Reliance Jio</span><span>58% · 140M users</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:58%"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-label"><span>Bharti Airtel</span><span>38% · 90M users</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:38%"></div></div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-label"><span>Vodafone Idea</span><span>4% · 10M users</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:4%"></div></div>
+        </div>
+      </div>
+
+      <table class="styled-table">
+        <thead>
+          <tr><th>Economic Metric</th><th>Global (2030)</th><th>India (2030)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>GDP Contribution</td><td>$13.2 trillion</td><td style="color:var(--accent3)">$450 billion</td></tr>
+          <tr><td>Jobs Created</td><td>22.8 million</td><td style="color:var(--accent3)">4 million</td></tr>
+          <tr><td>Healthcare Benefits</td><td>$1.5 trillion</td><td>$60+ billion</td></tr>
+          <tr><td>Manufacturing Gain</td><td>20–30% productivity</td><td>25% projected</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </section>
+  <footer>© 2024 5G Technology · Chapter 07: Statistics · Data: GSMA, TRAI, ITU</footer>
+</div>
+
+
+<script>
+
+// All page names used across the site
+const pages = ['hero', 'intro', 'evolution', 'architecture', 'global', 'applications', 'myths', 'stats'];
+
+// Switch to a different page by its id
+function showPage(id) {
+
+  // hide all pages and deactivate all nav links
+  pages.forEach(function(p) {
+    var pageEl = document.getElementById(p + '-page');
+    if (pageEl) pageEl.classList.remove('active');
+
+    var navEl = document.getElementById('nav-' + p);
+    if (navEl) navEl.classList.remove('active');
+  });
+
+  // show the selected page
+  var target = document.getElementById(id + '-page');
+  if (target) target.classList.add('active');
+
+  // mark the nav link as active
+  var activeNav = document.getElementById('nav-' + id);
+  if (activeNav) activeNav.classList.add('active');
+
+  // scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // run reveal animations after a short delay
+  setTimeout(triggerReveals, 100);
+}
+
+// Open or close the mobile drawer
+function toggleMobileNav() {
+  var nav = document.getElementById('mobileNav');
+  nav.classList.toggle('open');
+}
+
+// Animate all .reveal elements in the currently active page
+function triggerReveals() {
+  var reveals = document.querySelectorAll('.page.active .reveal');
+  reveals.forEach(function(el, index) {
+    setTimeout(function() {
+      el.classList.add('visible');
+    }, index * 120);
+  });
+}
+
+// Also reveal elements as the user scrolls down
+window.addEventListener('scroll', function() {
+  var reveals = document.querySelectorAll('.page.active .reveal');
+  reveals.forEach(function(el) {
+    var rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.9) {
+      el.classList.add('visible');
+    }
+  });
+});
+
+// Run on first load
+window.addEventListener('load', function() {
+  triggerReveals();
+});
+
+</script>
+</body>
+</html>
